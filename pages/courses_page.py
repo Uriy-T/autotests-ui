@@ -1,36 +1,37 @@
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
 
+from components.navigation.side_bar_component import SidebarComponent
+from components.navigation.navbar_component import NavbarComponent
 
-class CoursesList(BasePage):
+
+class CoursesListPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        # divide: Элементы заголовка
-        self.courses_main_lable = page.get_by_test_id('courses-list-toolbar-title-text')
+        self.sidebar = SidebarComponent(page)
+        self.navbar = NavbarComponent(page)
+
+        self.courses_main_label = page.get_by_test_id('courses-list-toolbar-title-text')
         self.create_course_button = page.get_by_test_id('courses-list-toolbar-create-course-button')
 
-        # divide: Элементы страницы без курсов
         self.empty_course_icon = page.get_by_test_id('courses-list-empty-view-icon')
         self.no_results_label = page.get_by_test_id('courses-list-empty-view-title-text')
         self.no_results_description = page.get_by_test_id('courses-list-empty-view-description-text')
 
-        # divide: Элементы карточки курса
         self.course_card_label = page.get_by_test_id('course-widget-title-text')
         self.course_image = page.get_by_test_id('course-preview-image')
         self.max_score_text = page.get_by_test_id('course-max-score-info-row-view-text')
         self.min_score_text = page.get_by_test_id('course-min-score-info-row-view-text')
         self.estimated_time = page.get_by_test_id('course-estimated-time-info-row-view-text')
 
-        # divide: Элементы меню карточки курса
         self.course_card_menu_button = page.get_by_test_id('course-view-menu-button')
         self.course_edit_button = page.get_by_test_id('course-view-edit-menu-item-text')
         self.course_delete_button = page.get_by_test_id('course-view-delete-menu-item')
 
-
     def check_courses_main_label(self):
-        expect(self.courses_main_lable).to_be_visible()
-        expect(self.courses_main_lable).to_have_text('Courses')
+        expect(self.courses_main_label).to_be_visible()
+        expect(self.courses_main_label).to_have_text('Courses')
 
     def click_create_course_button(self):
         self.create_course_button.click()
@@ -38,12 +39,12 @@ class CoursesList(BasePage):
     def check_visible_create_course_button(self):
         expect(self.create_course_button).to_be_visible()
 
-    def check_content_block(self):
+    def check_visible_empty_view(self):
         expect(self.empty_course_icon).to_be_visible()
         expect(self.no_results_label).to_be_visible()
         expect(self.no_results_label).to_have_text('There is no results')
         expect(self.no_results_description).to_be_visible()
-        expect(self.no_results_label).to_have_text('Results from the load test pipeline will be displayed here')
+        expect(self.no_results_description).to_have_text('Results from the load test pipeline will be displayed here')
 
     def check_course_card(
             self,
