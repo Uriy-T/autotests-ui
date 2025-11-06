@@ -3,8 +3,8 @@ from playwright.sync_api import Page
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
 from pages.dashboard_page import DashboardPage
-from pages.courses_page import CoursesListPage
-from pages.new_course_creation_page import NewCourseCreation
+from pages.courses_list_page import CoursesListPage
+from pages.new_course_creation_page import CreateCoursePage
 
 @pytest.fixture(scope='function')
 def login_page(chromium_page: Page) -> LoginPage:
@@ -28,5 +28,5 @@ def courses_list_page(chromium_page_with_state: Page) -> CoursesListPage:
     return CoursesListPage(page=chromium_page_with_state)
 
 @pytest.fixture(scope='function')
-def create_course_page(chromium_page_with_state: Page) -> NewCourseCreation:
-    return NewCourseCreation(page=chromium_page_with_state)
+def create_course_page(chromium_page_with_state: Page) -> CreateCoursePage:
+    return CreateCoursePage(page=chromium_page_with_state)
