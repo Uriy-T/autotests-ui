@@ -3,7 +3,6 @@ import pytest
 from pages.login_page import LoginPage
 
 
-
 @pytest.mark.regression
 @pytest.mark.authotization
 @pytest.mark.parametrize('email, password',
@@ -12,7 +11,6 @@ from pages.login_page import LoginPage
                           ("  ", "password")
                           ])
 def test_wrong_email_or_password_authorization(login_page: LoginPage, email: str, password: str):
-
     login_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
     login_page.form.fill(email=email, password=password)
     login_page.form.check_visible(email=email, password=password)

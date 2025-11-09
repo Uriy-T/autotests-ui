@@ -1,17 +1,20 @@
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
 from components.authentification.login_form_component import LoginFormComponent
+from elements.button import Button
+from elements.link import Link
+from elements.text import Text
+
 
 class LoginPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
         self.form = LoginFormComponent(page)
-        self.login_button = page.get_by_test_id('login-page-login-button')
-        self.registration_link = page.get_by_test_id('login-page-registration-link')
-        self.wrong_email_or_password = page.get_by_test_id('login-page-wrong-email-or-password-alert')
-
-
+        self.login_button = Button(page, locator='login-page-login-button', name='Login')
+        self.registration_link = Link(page, locator='login-page-registration-link', name="Registration")
+        self.wrong_email_or_password_alert = Text(page, 'login-page-wrong-email-or-password-alert',
+                                                  'wrong_email_or_password')
 
     def click_login_button(self):
         self.login_button.click()
@@ -20,5 +23,5 @@ class LoginPage(BasePage):
         self.registration_link.click()
 
     def check_validate_message_is_exist(self, text: str):
-        expect(self.wrong_email_or_password).to_be_visible()
-        expect(self.wrong_email_or_password).to_have_text(text)
+        self.wrong_email_or_password_alert.check_visible()
+        self.wrong_email_or_password_alert.check_have_text('Wrong email or password')
