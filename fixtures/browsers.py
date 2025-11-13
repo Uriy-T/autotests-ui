@@ -1,29 +1,22 @@
 from playwright.sync_api import Page, Playwright
 import pytest
 
+from pages.autentification.registration_page import RegistrationPage
+
 
 @pytest.fixture(scope='session')
 def initialize_browser_state(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
 
-    user_email = page.get_by_test_id('registration-form-email-input').locator('input')
-    user_email.fill('user.name@gmail.com')
-
-    user_name = page.get_by_test_id('registration-form-username-input').locator('input')
-    user_name.fill('username')
-
-    user_password = page.get_by_test_id('registration-form-password-input').locator('input')
-    user_password.fill('password')
-
-    btn_registration = page.get_by_test_id('registration-page-registration-button')
-    btn_registration.click()
+    registration_page = RegistrationPage(page)
+    registration_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+    registration_page.form.fill(email='user.name@gmail.com', username='username', password='password')
+    registration_page.registration_button.click()
 
     context.storage_state(path='browser-state.json')
     browser.close()
-
 
 
 @pytest.fixture(scope='function')
