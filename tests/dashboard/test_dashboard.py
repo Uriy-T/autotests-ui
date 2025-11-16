@@ -1,10 +1,27 @@
-from pages.dashboard.dashboard_page import DashboardPage
 import pytest
+import allure
+from allure_commons.types import Severity
+
+from pages.dashboard.dashboard_page import DashboardPage
+
+from tools.allure.tags import AllureTags
+from tools.allure.epics import AllureEpic
+from tools.allure.stories import AllureStories
+from tools.allure.features import AllureFeatures
 
 
 @pytest.mark.dashboard
 @pytest.mark.regression
+@allure.tag(AllureTags.DASHBOARD, AllureTags.REGRESSION)
+@allure.epic(AllureEpic.LMS)
+@allure.feature(AllureFeatures.DASHBOARD)
+@allure.story(AllureStories.DASHBOARD)
+@allure.parent_suite(AllureEpic.LMS)
+@allure.suite(AllureFeatures.DASHBOARD)
+@allure.sub_suite(AllureStories.DASHBOARD)
 class TestDashboard:
+
+    @allure.severity(Severity.NORMAL)
     def test_dashboard_displaying(self, dashboard_page_with_state: DashboardPage):
         dashboard_page_with_state.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/dashboard')
         dashboard_page_with_state.navbar.check_visible('username')
