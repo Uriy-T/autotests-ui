@@ -10,6 +10,8 @@ from tools.allure.tags import AllureTags
 from tools.allure.epics import AllureEpic
 from tools.allure.stories import AllureStories
 from tools.allure.features import AllureFeatures
+from tools.routes import AppRoute
+from config import settings
 
 
 @pytest.mark.regression
@@ -31,7 +33,7 @@ class TestAuthorization:
     @allure.tag(AllureTags.USER_LOGIN)
     @allure.severity(Severity.CRITICAL)
     def test_wrong_email_or_password_authorization(self, login_page: LoginPage, email: str, password: str):
-        login_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
+        login_page.visit(AppRoute.LOGIN)
         login_page.form.fill(email=email, password=password)
         login_page.form.check_visible(email=email, password=password)
         login_page.click_login_button()
@@ -43,7 +45,7 @@ class TestAuthorization:
     def test_navigate_form_test_successful_authorization_to_registration(self,
                                                                          login_page: LoginPage,
                                                                          registration_page: RegistrationPage):
-        login_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
+        login_page.visit(AppRoute.LOGIN)
         login_page.click_registration()
         registration_page.form.check_visible(email='',
                                              username='',
@@ -55,20 +57,20 @@ class TestAuthorization:
     def test_successful_authorization(self, registration_page: RegistrationPage,
                                       login_page: LoginPage,
                                       dashboard_page: DashboardPage):
-        registration_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
-        registration_page.form.fill(email='test_user.name@gmail.com',
-                                    username='test_username',
-                                    password='test_pass')
+        registration_page.visit(AppRoute.REGISTRATION)
+        registration_page.form.fill(email=settings.test_user.email,
+                                    username=settings.test_user.username,
+                                    password=settings.test_user.password)
         registration_page.click_registration_button()
 
-        dashboard_page.navbar.check_visible('test_username')
+        dashboard_page.navbar.check_visible(settings.test_user.username)
         dashboard_page.sidebar.check_visible()
         dashboard_page.dashboard_title.check_visible()
         dashboard_page.sidebar.click_logout()
 
-        login_page.form.fill(email='test_user.name@gmail.com', password='test_pass')
+        login_page.form.fill(email=settings.test_user.email, password=settings.test_user.password)
         login_page.click_login_button()
 
-        dashboard_page.navbar.check_visible('test_username')
+        dashboard_page.navbar.check_visible(settings.test_user.username)
         dashboard_page.sidebar.check_visible()
         dashboard_page.dashboard_title.check_visible()
