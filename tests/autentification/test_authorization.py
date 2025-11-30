@@ -24,6 +24,7 @@ from config import settings
 @allure.suite(AllureFeatures.AUTHENTICATION)
 @allure.sub_suite(AllureStories.AUTHORIZATION)
 class TestAuthorization:
+    @pytest.mark.xdist_group(name='authorization-group')
     @pytest.mark.parametrize('email, password',
                              [("user.name@gmail.com", "password"),
                               ("user.name@gmail.com", "  "),
@@ -42,9 +43,8 @@ class TestAuthorization:
     @allure.title('Navigation from login page to registration page')
     @allure.tag(AllureTags.NAVIGATION)
     @allure.severity(Severity.NORMAL)
-    def test_navigate_form_test_successful_authorization_to_registration(self,
-                                                                         login_page: LoginPage,
-                                                                         registration_page: RegistrationPage):
+    def test_navigate_form_authorization_to_registration(self, login_page: LoginPage,
+                                                               registration_page: RegistrationPage):
         login_page.visit(AppRoute.LOGIN)
         login_page.click_registration()
         registration_page.form.check_visible(email='',

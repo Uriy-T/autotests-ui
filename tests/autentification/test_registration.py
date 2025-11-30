@@ -2,6 +2,7 @@ import pytest
 import allure
 from allure_commons.types import Severity
 
+from fixtures.pages import registration_page
 from pages.autentification.registration_page import RegistrationPage
 from pages.dashboard.dashboard_page import DashboardPage
 
@@ -24,6 +25,7 @@ from config import settings
 @allure.sub_suite(AllureStories.REGISTRATION)
 class TestRegistration:
 
+    @pytest.mark.xdist_group(name='authorization-group')
     @allure.title('Registration with correct email, username and password')
     @allure.severity(Severity.BLOCKER)
     def test_successful_registration(self, registration_page: RegistrationPage, dashboard_page: DashboardPage):

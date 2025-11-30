@@ -5,7 +5,7 @@ from pydantic import EmailStr, FilePath, HttpUrl, DirectoryPath, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Browser(Enum):
+class Browser(str, Enum):
     WEBKIT = 'webkit'
     CHROMIUM = 'chromium'
     FIREFOX = 'firefox'
