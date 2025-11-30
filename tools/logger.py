@@ -14,10 +14,3 @@ def get_logger(name: str) -> logging.Logger:
 
     logger.addHandler(handler)
     return logger
-
-
-
-loogger = get_logger('Page')
-
-loogger.info('Hello with some info')
-loogger.warning('attention from warning')

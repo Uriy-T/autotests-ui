@@ -44,7 +44,7 @@ class TestAuthorization:
     @allure.tag(AllureTags.NAVIGATION)
     @allure.severity(Severity.NORMAL)
     def test_navigate_form_authorization_to_registration(self, login_page: LoginPage,
-                                                               registration_page: RegistrationPage):
+                                                         registration_page: RegistrationPage):
         login_page.visit(AppRoute.LOGIN)
         login_page.click_registration()
         registration_page.form.check_visible(email='',

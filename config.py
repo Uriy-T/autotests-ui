@@ -1,5 +1,7 @@
 from enum import Enum
 from typing import Self
+import platform
+import sys
 
 from pydantic import EmailStr, FilePath, HttpUrl, DirectoryPath, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -34,7 +36,10 @@ class Settings(BaseSettings):
     test_data: TestData
     videos_dir: DirectoryPath
     tracing_dir: DirectoryPath
+    allure_results_dir: DirectoryPath
     browser_state_file: FilePath
+    os_info: str
+    python_version: str
 
     def get_base_url(self) -> str:
         return f"{self.app_url}/"
@@ -44,15 +49,22 @@ class Settings(BaseSettings):
         videos_dir = DirectoryPath('./videos')
         tracing_dir = DirectoryPath('./tracing')
         browser_state_file = FilePath('browser-state.json')
+        allure_results_dir = DirectoryPath('./allure-results')
 
         videos_dir.mkdir(exist_ok=True)
         tracing_dir.mkdir(exist_ok=True)
+        allure_results_dir.mkdir(exist_ok=True)
         browser_state_file.touch(exist_ok=True)
+        os_info = f'{platform.system()}, {platform.release()}'
+        python_version = sys.version
 
         return Settings(
             videos_dir=videos_dir,
             tracing_dir=tracing_dir,
-            browser_state_file=browser_state_file
+            allure_results_dir=allure_results_dir,
+            browser_state_file=browser_state_file,
+            os_info=os_info,
+            python_version=python_version
         )
 
 
