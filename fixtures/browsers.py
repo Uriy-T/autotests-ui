@@ -33,6 +33,7 @@ def page_with_state(request: SubRequest, initialize_browser_state, playwright: P
                                           browser_type=request.param)
 
 
+
 @pytest.fixture(scope='function', params=settings.browsers)
 def page(request: SubRequest, playwright: Playwright) -> Page:
     yield from initialize_playwright_page(playwright, test_name=request.node.name, browser_type=request.param)
