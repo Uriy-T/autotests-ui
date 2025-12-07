@@ -8,7 +8,6 @@ on:
     branches:
       - main
 
-
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -40,7 +39,6 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-
       - name: Save testing Allure history as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -58,7 +56,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Get testing Allure history
         uses: actions/download-artifact@v4
         with:
@@ -68,7 +65,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results
-
 
       - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master
