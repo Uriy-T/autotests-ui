@@ -19,3 +19,9 @@ tracing/
 *.txt
 !requirements.txt
 temp/
+
+# coverage
+coverage-history.json
+coverage-report.json
+coverage-history.json
+coverage.html
