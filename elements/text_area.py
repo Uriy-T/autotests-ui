@@ -19,7 +19,7 @@ class TextArea(BaseElement):
         return super().get_locator(nth, **kwargs).locator('textarea').first
 
     def get_raw_locator(self, nth: int = 0, **kwargs) -> str:
-        return f"{super().get_locator(nth, **kwargs).locator('textarea').first}"
+        return f"{super().get_raw_locator(nth, **kwargs)}//textarea"
 
     def fill(self, value: str, nth: int = 0, **kwargs):
         step = f'Fill {self.type_of} "{self.name}" to value "{value}"'
