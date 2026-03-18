@@ -56,7 +56,26 @@ jobs:
           name: coverage-report
           path: coverage.html
 
-      - name: Get Allure history
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results/
+          retention-days: 20
+
+  publish-report:
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Download Allure results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results/
+
+      - name: Get Allure history from gh-pages
         uses: actions/checkout@v3
         if: always()
         continue-on-error: true
@@ -64,32 +83,12 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Save testing Allure history as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: gh-pages-allure-history
-          path: gh-pages/
-
-      - name: Save testing Allure results as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results/
-
-  publish-report:
-    needs: [ run-tests ]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Get testing Allure history
-        uses: actions/download-artifact@v4
-        with:
-          name: gh-pages-allure-history
-
-      - name: Get raw Allure report
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results
+      - name: Create allure-history directory if it doesn't exist
+        run: |
+          mkdir -p allure-history
+          if [ -d "gh-pages/history" ]; then
+            cp -r gh-pages/history allure-history/
+          fi
 
       - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master
@@ -97,10 +96,12 @@ jobs:
         with:
           allure_results: allure-results
           allure_history: allure-history
+          keep_reports: 20
 
       - name: Deploy report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+          keep_files: true
