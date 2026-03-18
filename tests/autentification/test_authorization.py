@@ -15,7 +15,7 @@ from config import settings
 
 
 @pytest.mark.regression
-@pytest.mark.authotization
+@pytest.mark.authorization
 @allure.tag(AllureTags.AUTHORISATION, AllureTags.REGRESSION)
 @allure.epic(AllureEpic.LMS)
 @allure.feature(AllureFeatures.AUTHENTICATION)
